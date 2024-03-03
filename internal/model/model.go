@@ -1,6 +1,14 @@
 package model
 
-import "time"
+import (
+	"encoding/json"
+	"time"
+)
+
+type UpdateGoods struct {
+	Name        string `json:"name"`
+	Description string `json:"description"`
+}
 
 type Goods struct {
 	ID          int
@@ -12,18 +20,14 @@ type Goods struct {
 	Created_at  time.Time
 }
 
-func NewGoods() *Goods {
-	return &Goods{}
+func (g *Goods) MarshalBinary() ([]byte, error) {
+	return json.Marshal(g)
 }
 
 type DeleteGoods struct {
 	ID        int
 	ProjectID int
 	Removed   int
-}
-
-func NewDeleteGoods() *DeleteGoods {
-	return &DeleteGoods{}
 }
 
 type GoodsSL []*Goods
@@ -40,12 +44,15 @@ type List struct {
 	GoodsSL
 }
 
-func NewList() *List {
-	return &List{}
-}
-
 type Project struct {
 	ID         int
 	Name       string
 	Created_at time.Time
 }
+
+type PriorityGoods struct {
+	ID       int
+	Priority int
+}
+
+type PriorityGoodsSL []*PriorityGoods

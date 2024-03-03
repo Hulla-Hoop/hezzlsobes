@@ -5,29 +5,34 @@ import (
 	"hezzl/internal/model"
 )
 
-func (db *sqlPostgres) Update(project_id int, id int, name string, description string) (*model.Goods, error) {
+func (db *SqlPostgres) Update(reqId string, id int, name string, description string) (*model.Goods, error) {
 
-	err := db.Check(id)
+	err := db.Check(reqId, id)
 	if err != nil {
 		return nil, err
 	}
-	db.logger.Debug("db update полученные данные---", project_id, name, description, "--id----", id)
-	var desc string
-	if description == "" {
-		desc = " "
-	} else {
-		desc = fmt.Sprintf("patronymic = '%s',", description)
-	}
+	db.logger.L.WithField("psql.Update", reqId).Debug("db update полученные данные---", name, description, "--id----", id)
 
-	update := fmt.Sprintf("UPDATE goods SET %s  name=$1  WHERE id=$2 ", desc)
-	_, err = db.dB.Exec(update,
-		name,
-		id)
+	update := fmt.Sprintf(`
+	BEGIN;
+
+	SELECT * FROM goods WHERE id = %d FOR UPDATE;
+
+	UPDATE goods 
+	SET description='%s'  name='%s'  
+	WHERE id=%d;
+	
+	COMMIT;
+	`, id, description, name, id)
+	db.logger.L.WithField("psql.Update", reqId).Debug("db update запрос---", update)
+	_, err = db.dB.Exec(update)
 	if err != nil {
+		db.logger.L.WithField("psql.Update", reqId).Error(err)
 		return nil, err
 	}
-	goods, err := db.Select(id)
+	goods, err := db.Select(reqId, id)
 	if err != nil {
+		db.logger.L.WithField("psql.Update", reqId).Error(err)
 		return nil, err
 	}
 

@@ -23,7 +23,7 @@ CREATE TABLE goods (
     id int DEFAULT nextval('goods_seq'::regclass) NOT NULL,
     project_id int NOT NULL,
     name text NOT NULL,
-    description text,
+    description text DEFAULT '',
     priority int DEFAULT nextval('priority_seq'::regclass) NOT NULL,
     removed bool DEFAULT false,
     created_at timestamp with time zone DEFAULT NOW(),

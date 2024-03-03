@@ -3,19 +3,19 @@ package psql
 import (
 	"database/sql"
 	"fmt"
+	"hezzl/internal/config"
+	"hezzl/internal/logger"
 
-	"github.com/hulla-hoop/restapi/internal/config"
 	_ "github.com/lib/pq"
 	"github.com/pressly/goose/v3"
-	"github.com/sirupsen/logrus"
 )
 
-type sqlPostgres struct {
+type SqlPostgres struct {
 	dB     *sql.DB
-	logger *logrus.Logger
+	logger *logger.Logger
 }
 
-func InitDb(logger *logrus.Logger) (*sqlPostgres, error) {
+func InitDb(logger *logger.Logger) (*SqlPostgres, error) {
 	config := config.DbNew()
 
 	dsn := fmt.Sprintf("host=%s user=%s dbname=%s password=%s port=%s sslmode=%s", config.Host, config.User, config.DBName, config.Password, config.Port, config.SSLMode)
@@ -30,7 +30,7 @@ func InitDb(logger *logrus.Logger) (*sqlPostgres, error) {
 		return nil,
 			fmt.Errorf("--- Ошибка миграции:%s", err)
 	}
-	return &sqlPostgres{
+	return &SqlPostgres{
 		dB:     dB,
 		logger: logger,
 	}, nil

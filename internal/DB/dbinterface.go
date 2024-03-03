@@ -5,8 +5,9 @@ import (
 )
 
 type DB interface {
-	Create(user *model.Goods) (*int, error)
-	Delete(id int) error
-	Update(user *model.Goods, id int) error
-	InsertPage(page uint, limit int) (model.GoodsSL, error)
+	Create(reqId string, name string, project_id int) (*model.Goods, error)
+	Delete(reqId string, id int) (*model.DeleteGoods, error)
+	Update(reqId string, id int, name string, description string) (*model.Goods, error)
+	List(reqId string, page uint, limit int) (*model.List, error)
+	Reprioritize(reqId string, id int) (model.PriorityGoodsSL, error)
 }

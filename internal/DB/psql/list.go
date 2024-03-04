@@ -29,7 +29,7 @@ func (db *SqlPostgres) List(reqId string, page uint, limit int) (*model.List, er
 	for rows.Next() {
 		var goods model.Goods
 
-		err := rows.Scan(goods.ID, goods.ProjectID, goods.Name, goods.Description, goods.Priority, goods.Removed, goods.Created_at)
+		err := rows.Scan(&goods.ID, &goods.ProjectID, &goods.Name, &goods.Description, &goods.Priority, &goods.Removed, &goods.Created_at)
 		if err != nil {
 			db.logger.L.WithField("psql.List", reqId).Error(err)
 			continue

@@ -9,7 +9,7 @@ import (
 func (db *SqlPostgres) Create(reqId string, name string, project_id int) (*model.Goods, error) {
 
 	var id int
-	db.logger.L.WithField("psql.Create", reqId).Debug("db create полученные данные---", name, project_id)
+	db.logger.L.WithField("psql.Create", reqId).Debug("db create полученные данные---", name, "----", project_id)
 	err := db.dB.QueryRow(
 		`INSERT INTO goods(name,project_id) 
 		 VALUES ($1,$2) returning id`,

@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"hezzl/internal/DB"
 	"hezzl/internal/logger"
 	"hezzl/internal/service"
 )
@@ -11,8 +10,13 @@ type Handlers struct {
 	logger  *logger.Logger
 }
 
-func New(db DB.DB, logger *logger.Logger, service *service.Service) *Handlers {
+func New(logger *logger.Logger, service *service.Service) *Handlers {
 	return &Handlers{
 		logger:  logger,
 		service: service}
+}
+
+func (e *Handlers) Close() {
+	e.logger.L.Info("Close handlers")
+	e.service.Close()
 }

@@ -42,3 +42,11 @@ services:
       - REDIS_PASSWORD=111
       - REDIS_PORT=6379
       - REDIS_DATABASES=1
+  clickhouse:
+    image: clickhouse/clickhouse-server:latest
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+    environment:
+      - CLICKHOUSE_USER=default
+      - CLICKHOUSE_PASSWORD=default

@@ -27,7 +27,7 @@ func (g *Goods) MarshalBinary() ([]byte, error) {
 type DeleteGoods struct {
 	ID        int
 	ProjectID int
-	Removed   int
+	Removed   bool
 }
 
 type GoodsSL []*Goods
@@ -52,7 +52,17 @@ type Project struct {
 
 type PriorityGoods struct {
 	ID       int
-	Priority int
+	Priority int `json:"newPriority"`
 }
 
 type PriorityGoodsSL []*PriorityGoods
+
+type LogGoods struct {
+	ID          int
+	ProjectID   int
+	Name        string
+	Description string
+	Priority    int
+	Removed     bool
+	EventTime   time.Time
+}

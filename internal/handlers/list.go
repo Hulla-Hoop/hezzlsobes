@@ -7,7 +7,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func (e *Handlers) UserPagination(c echo.Context) error {
+func (e *Handlers) List(c echo.Context) error {
 	reqId := c.Get("reqId").(string)
 
 	valueStr, err := c.FormParams()

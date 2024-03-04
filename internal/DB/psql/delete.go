@@ -27,7 +27,7 @@ func (db *SqlPostgres) Delete(reqId string, id int) (*model.DeleteGoods, error) 
 	
 	`, id, id)
 
-	result, err := db.dB.Exec(str)
+	_, err = db.dB.Exec(str)
 
 	if err != nil {
 		return nil, err
@@ -38,6 +38,6 @@ func (db *SqlPostgres) Delete(reqId string, id int) (*model.DeleteGoods, error) 
 		return nil, err
 	}
 
-	db.logger.L.WithField("psql.Delete", id).Info("Пользователь успешно удален ", result)
+	db.logger.L.WithField("psql.Delete", id).Info("Пользователь успешно удален ", dG)
 	return dG, nil
 }

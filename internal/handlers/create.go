@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"hezzl/internal/model"
 	"net/http"
 	"strconv"
 
@@ -10,25 +11,31 @@ import (
 func (e *Handlers) Create(c echo.Context) error {
 	reqId := c.Get("reqId").(string)
 
-	var name string
+	var name model.UpdateGoods
 
-	str := c.Param("projectId")
+	valueStr, err := c.FormParams()
+	if err != nil {
+		e.logger.L.WithField("Handlers.Create", reqId).Error(err)
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
 
-	projectId, err := strconv.Atoi(str)
+	idStr := valueStr["projectId"]
+
+	projectId, err := strconv.Atoi(idStr[0])
 	if err != nil {
 		e.logger.L.WithField("Handlers.Create", reqId).Error(err)
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 	e.logger.L.WithField("Handlers.Create", reqId).Debug(projectId)
 
-	err = c.Bind(name)
+	err = c.Bind(&name)
 
 	if err != nil {
 		e.logger.L.WithField("Handlers.Create", reqId).Error(err)
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
-	goods, err := e.service.Create(reqId, name, projectId)
+	goods, err := e.service.Create(reqId, name.Name, projectId)
 	if err != nil {
 		e.logger.L.WithField("Handlers.Create", reqId).Error(err)
 		return c.JSON(http.StatusInternalServerError, err.Error())

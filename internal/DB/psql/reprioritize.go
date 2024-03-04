@@ -29,7 +29,7 @@ func (db *SqlPostgres) Reprioritize(reqId string, id int, priority int) (model.P
 	
 	`, id-1, priority, id-1)
 
-	result, err := db.dB.Exec(zpr)
+	_, err = db.dB.Exec(zpr)
 
 	if err != nil {
 		db.logger.L.WithField("psql.Reprioritize", reqId).Error(err)
@@ -42,6 +42,6 @@ func (db *SqlPostgres) Reprioritize(reqId string, id int, priority int) (model.P
 		return nil, err
 	}
 
-	db.logger.L.WithField("psql.Reprioritize", reqId).Debug("Пользователь успешно удален ", result)
+	db.logger.L.WithField("psql.Reprioritize", reqId).Debug("Выходные данные", dG)
 	return dG, nil
 }

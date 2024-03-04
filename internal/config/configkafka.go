@@ -12,7 +12,7 @@ type Configkafka struct {
 	TopicErr         string
 }
 
-func New() *Configkafka {
+func NewKafka() *Configkafka {
 
 	return &Configkafka{
 		BootstrapService: os.Getenv("BOOTSTRAPSERVER"),

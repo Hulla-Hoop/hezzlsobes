@@ -53,3 +53,8 @@ func (c *Cash) DelVal(id int) error {
 	}
 	return nil
 }
+
+func (c *Cash) Close() {
+	c.db.Close()
+	c.r.Close()
+}

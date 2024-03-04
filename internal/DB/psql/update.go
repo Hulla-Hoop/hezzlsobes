@@ -19,7 +19,7 @@ func (db *SqlPostgres) Update(reqId string, id int, name string, description str
 	SELECT * FROM goods WHERE id = %d FOR UPDATE;
 
 	UPDATE goods 
-	SET description='%s'  name='%s'  
+	SET description='%s',name='%s'  
 	WHERE id=%d;
 	
 	COMMIT;

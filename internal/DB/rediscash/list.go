@@ -3,6 +3,8 @@ package rediscash
 import (
 	"context"
 	"encoding/json"
+	"errors"
+	"hezzl/internal/DB/psql"
 	"hezzl/internal/model"
 	"strconv"
 	"time"
@@ -38,7 +40,12 @@ func (c *Cash) List(reqId string, page uint, limit int) (*model.List, error) {
 		}
 
 		goods, err := c.db.Select(reqId, int(i))
+		var psqlErr *psql.ErrorNotFound
 		if err != nil {
+			if errors.As(err, &psqlErr) {
+				c.log.L.WithField("Handlers.Update", reqId).Error(err)
+				continue
+			}
 			return nil, err
 		}
 		c.log.L.WithField("List", reqId).Debug("Значения взято из db", key, "----", goods)

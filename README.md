@@ -4,15 +4,51 @@
 ТЗ
 
 1) Развернуть сервис на Golang, Postgres, Clickhouse, Nats (альтернатива kafka), Redis 
+
+------ручки сервиса
+
+CREATE
+POST   goods/create?projectId=1
+
+UPDATE
+PATCH  goods/update?id=1&projectId=5
+
+REPRIORITIZE
+PATCH  goods/reprioritize?id=2&projectId=3
+
+REMOVE
+DELETE goods/remove?id=1&projectId=2
+
+LIST
+GET    goods/list?limit=10&offset=1
+
+
+
+
+
+
 2) Описать модели данных и миграций 
+
+------Миграции в Postgres накатываются автоматически при запуске сервиса
+------Миграции в Clickhouse можно накатить через Makefail
+
 3) В миграциях Postgres 
  a) Проставить primary-key и индексы на указанные поля
  b) При добавлении записи в таблицу устанавливать приоритет как макс приоритет в таблице +1. Приоритеты начинаются с 1
  c) При накатке миграций добавить одну запись в Campaigns таблицу по умолчанию
     id = serial
     name = Первая запись
+
+------Сделано
+
 4) Реализовать CRUD методы на GET-POST-PATCH-DELETE данных в таблице GOODS в Postgres 
+
+------Сделано
+
 5) При редактировании данных в Postgres ставить блокировку на чтение записи и оборачивать все в транзакцию. Валидируем поля при редактировании.
+
+------Сделано
+
 6) При редактировании данных в GOODS инвалидируем данные в REDIS 
 
 ------При редактировании записи удаляются из Redis
